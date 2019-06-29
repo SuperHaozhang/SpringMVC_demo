@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -42,5 +44,12 @@ public class WebConfig implements WebMvcConfigurer {
         return internalResourceViewResolver;
     }
 
+    @Bean
+    public MultipartResolver multipartResolver(){
+        CommonsMultipartResolver commonsMultipartResolver =  new CommonsMultipartResolver();
+        commonsMultipartResolver.setDefaultEncoding("utf-8");
+        commonsMultipartResolver.setMaxUploadSize(10485760000L);
+        return commonsMultipartResolver;
+    }
 
 }

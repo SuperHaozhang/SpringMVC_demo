@@ -76,7 +76,7 @@
                                                                             id="confirmPassword">
             </div>
             <div class="cell">
-                <label for="avatar">Avatar</label><input type="file" name="avatar" id="avatar">
+                <label for="avatar">Avatar</label><input type="file" name="file" id="avatar">
             </div>
         </div>
         <div class="row">
