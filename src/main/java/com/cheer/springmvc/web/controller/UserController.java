@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
@@ -59,8 +60,8 @@ public class UserController {
 
     @RequestMapping(value="/register", method= RequestMethod.POST)
     public String register( MultipartFile file,HttpServletRequest request) {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        String username = request.getParameter("username");//获取注册页面账号名
+        String password = request.getParameter("password");//获取注册页面密码
         LOGGER.debug(username+":::::"+password);
         User user = new User();
         int insert = 0;
@@ -75,7 +76,7 @@ public class UserController {
             user.setAvatar(avatar + suffix);
             insert = userService.insert(user);
             if(insert>0){
-                return "redirect:/login";
+                return "redirect:/login";//跳转：登陆页面
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -86,16 +87,16 @@ public class UserController {
     @RequestMapping("avatar")
     @ResponseBody
     public User avatar(HttpServletRequest request){
-        User user = (User) request.getSession().getAttribute("user");
-        if (user.getAvatar() == null) {
+        User user = (User) request.getSession().getAttribute("user");//从登陆中取出在session中的user对象
+        if (user.getAvatar() == null) {//判断user中有无头像：如果没有就是用默认的头像
             user.setAvatar("default.jpeg");
         } else {
-            String uploadPath = request.getServletContext().getRealPath("/upload/avatar");
+            String uploadPath = request.getServletContext().getRealPath("/upload/avatar");//获取上传文件的路径及名称
             String dest = uploadPath + "/" + user.getAvatar();
             File avatar = new File(dest);
             if (!avatar.exists()) {
-                String src = System.getProperty("user.home") + "/avatar/" + user.getAvatar();
-                IOUtils.copy(src, dest);
+                String src = System.getProperty("user.home") + "/avatar/" + user.getAvatar();//写入项目中指定文件夹
+                IOUtils.copy(src, dest);//把上传后的文件复制到指定项目文件夹中
             }
         }
         return user;

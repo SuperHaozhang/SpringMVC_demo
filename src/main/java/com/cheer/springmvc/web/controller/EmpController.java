@@ -32,6 +32,12 @@ public class EmpController {
         model.addAttribute("list",list);
         return "empList2";
     }
+
+    /**
+     * 删除
+     * @param empno 根据empno找到对应对象进行删除
+     * @return
+     */
     @RequestMapping("/delete")
     public String delete(String empno){
 
@@ -40,11 +46,20 @@ public class EmpController {
         return "redirect:/getEmpList";
     }
 
+    /**
+     * 转发到inseret方法
+     * @return
+     */
     @RequestMapping("inseret")
     public String insert(){
         return "inseret";
     }
 
+    /**
+     * 添加功能
+     * @param emp 传入对象插入数据库中
+     * @return
+     */
     @PostMapping("inseret")
     public String insert2(Emp emp){
 
@@ -53,14 +68,24 @@ public class EmpController {
         return "redirect:/getEmpList";
     }
 
+    /**
+     *
+     * @param empno 根据empno找到对应emp对象
+     * @param model 把emp对象放入请求域中
+     * @return 转发至update
+     */
     @RequestMapping("update")
     public String getEmp(String empno,Model model){
-
         Emp emp = empService.getEmp(Integer.parseInt(empno));
         Model emp1 = model.addAttribute("emp", emp);
         return "update";
     }
 
+    /**
+     * 更新对应的对象数据
+     * @param emp 传入的对象进行更新
+     * @return
+     */
     @PostMapping("update")
     public String getEmp1(Emp emp){
         int update = empService.update(emp);
