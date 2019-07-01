@@ -49,7 +49,6 @@
     <span id="user1"></span><a href="/javaweb/inseret.jsp">点击添加</a>
 </div>
 
-<c:forEach var="list" items=""
 
 
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>

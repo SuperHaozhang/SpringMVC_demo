@@ -31,7 +31,7 @@
 </head>
 <body>
 <div id="header">
-    <img id="avatar"><span id="user"></span><a href="out">点击退出</a>
+    <img id="avatar" src=""><span id="user"></span><a href="out">点击退出</a>
     <span id="user1"></span><a href="inseret">点击添加</a>
     <span id=""></span><h4>欢迎您${sessionScope.user.username}，登录成功！</h4>
 </div>
@@ -62,6 +62,24 @@
     </tr>
     </c:forEach>
 </table>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script>
+
+
+    $(function () {
+        $.ajax({
+            url: "avatar",
+            dataType: "json",
+            method: "GET",
+            success: function (response) {
+                let avatar = response.avatar;
+                $("#avatar").attr("src", "upload/avatar/" + avatar)
+            }
+        });
+    });
+
+</script>
+
 
 </body>
 </html>

@@ -47,7 +47,7 @@ public class EmpController {
 
     @PostMapping("inseret")
     public String insert2(Emp emp){
-        System.out.println(emp);
+
         int insert = empService.insert(emp);
 
         return "redirect:/getEmpList";
@@ -55,7 +55,7 @@ public class EmpController {
 
     @RequestMapping("update")
     public String getEmp(String empno,Model model){
-        System.out.println(empno);
+
         Emp emp = empService.getEmp(Integer.parseInt(empno));
         Model emp1 = model.addAttribute("emp", emp);
         return "update";

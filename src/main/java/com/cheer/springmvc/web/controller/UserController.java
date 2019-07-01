@@ -2,8 +2,11 @@ package com.cheer.springmvc.web.controller;
 
 import com.cheer.spring.mybatis.pojo.User;
 import com.cheer.spring.mybatis.service.UserService;
+import com.cheer.spring.mybatis.service.impl.UserServiceImpl;
+import com.cheer.spring.mybatis.util.IOUtils;
 import com.cheer.spring.mybatis.util.StringUtils;
 import org.apache.commons.io.FileUtils;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping({"/system", "/"})
@@ -58,13 +65,15 @@ public class UserController {
         User user = new User();
         int insert = 0;
         try {
-            user.setUsername(username);
-            user.setPassword(StringUtils.encrypt(password));
-            String fileName = file.getOriginalFilename();
-            String suffix = fileName.substring(fileName.lastIndexOf("."));
+            user.setUsername(username); //获取注册用户名
+            user.setPassword(StringUtils.encrypt(password));//获取用户注册密码
+            String fileName = file.getOriginalFilename();//获取上传文件名称
+            String suffix = fileName.substring(fileName.lastIndexOf("."));//分解上传文件后缀名
             String avatar = username;
-            FileUtils.copyInputStreamToFile(file.getInputStream(), new File("E:/" + avatar + suffix));
+            String path = System.getProperty("user.home")+"/avatar/"+avatar+suffix;//设置上传文件对应用户名
+            FileUtils.copyInputStreamToFile(file.getInputStream(), new File(path));//写入到头像文件夹中
             user.setAvatar(avatar + suffix);
+            LOGGER.debug(avatar+suffix);
             insert = userService.insert(user);
             if(insert>0){
                 return "redirect:/login";
@@ -75,10 +84,42 @@ public class UserController {
         return "index";
     }
 
+    @RequestMapping("avatar")
+    @ResponseBody
+    public User avatar(HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("user");
+        if (user.getAvatar() == null) {
+            user.setAvatar("default.jpeg");
+        } else {
+            String uploadPath = request.getServletContext().getRealPath("/upload/avatar");
+            String dest = uploadPath + "/" + user.getAvatar();
+            File avatar = new File(dest);
+            if (!avatar.exists()) {
+                String src = System.getProperty("user.home") + "/avatar/" + user.getAvatar();
+                IOUtils.copy(src, dest);
+            }
+        }
+        return user;
+    }
+
+
     @RequestMapping("out")
     public String out(HttpServletRequest request){
         HttpSession session = request.getSession();
         session.invalidate();
         return "redirect:/login";
     }
+
+    @RequestMapping(value = "a",method= RequestMethod.POST)
+    @ResponseBody
+    public Map<String,String> a(String username){
+        Map<String,String> messgie = new HashMap<>();
+        User user = userService.find(username);
+        if(user!=null){
+            messgie.put("code","-1");
+            messgie.put("message","用户名已经存在");
+        }
+        return messgie;
+    }
+
 }

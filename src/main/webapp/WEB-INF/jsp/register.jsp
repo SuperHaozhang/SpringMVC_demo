@@ -87,38 +87,36 @@
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
-/*    $(function () {
+    $(function () {
         $("button").click(function (e) {
             // 阻止单击默认行为
             e.preventDefault();
-
             let password = $("#password").val();
             let confirmPassword = $("#confirmPassword").val();
             if (password !== confirmPassword) {
                 alert("确认密码必须与密码相同！");
                 return;
             }
-
             // 提交表单
             $("form").submit();
-        });*/
+        });
 
         $("#username").change(function () {
             console.log("username值改变！");
-            // $.ajax({
-            //     url: "servlet/UsernameCheckServlet",
-            //     method: "POST",
-            //     dataType: "JSON",
-            //     data: {"username": $("#username").val()},
-            //     success: function (response) {
-            //         if (response.code === "-1") {
-            //             $("button").attr("disabled", "disabled");
-            //             alert(response.message);
-            //         } else {
-            //             $("button").removeAttr("disabled");
-            //         }
-            //     }
-            // });
+             $.ajax({
+                 url: "a",
+                 method: "POST",
+                 dataType: "JSON",
+                 data: {"username": $("#username").val()},
+                 success: function (response) {
+                     if (response.code === "-1") {
+                         $("button").attr("disabled", "disabled");
+                         alert(response.message);
+                     } else {
+                         $("button").removeAttr("disabled");
+                     }
+                 }
+             });
         });
     });
 </script>
