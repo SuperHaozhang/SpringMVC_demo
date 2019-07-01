@@ -73,7 +73,6 @@ public class UserController {
             String path = System.getProperty("user.home")+"/avatar/"+avatar+suffix;//设置上传文件对应用户名
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(path));//写入到头像文件夹中
             user.setAvatar(avatar + suffix);
-            LOGGER.debug(avatar+suffix);
             insert = userService.insert(user);
             if(insert>0){
                 return "redirect:/login";
