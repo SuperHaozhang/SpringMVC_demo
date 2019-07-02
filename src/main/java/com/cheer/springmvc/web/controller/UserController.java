@@ -2,7 +2,6 @@ package com.cheer.springmvc.web.controller;
 
 import com.cheer.spring.mybatis.pojo.User;
 import com.cheer.spring.mybatis.service.UserService;
-import com.cheer.spring.mybatis.service.impl.UserServiceImpl;
 import com.cheer.spring.mybatis.util.IOUtils;
 import com.cheer.spring.mybatis.util.StringUtils;
 import org.apache.commons.io.FileUtils;
